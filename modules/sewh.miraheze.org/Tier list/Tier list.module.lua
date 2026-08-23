@@ -45,6 +45,7 @@ function p.main(frame)
 	end
 
 	local tiers
+
 	if not args.tiers then
 		tiers = {"S", "A", "B", "C", "D", "F"}
 	else
