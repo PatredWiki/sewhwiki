@@ -20,6 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: obbywiki/wikiwire@v0.5.0 # WikiWire is pre-v1 software, consider tethering your workflow to the current latest release to avoid breaking changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.WIKIWIRE_GITHUB_TOKEN }}
         with:
           username: H3LP3R@WikiWire # replace with your bot user and bot password
           password: ${{ secrets.WIKIWIRE_BOT_PASSWORD }}
