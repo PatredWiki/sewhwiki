@@ -1,0 +1,2 @@
+<onlyinclude><includeonly><templatestyles src="Tier list/styles.css"/>{{#invoke:Tier list|main}}[[Category:Pages with tier lists]]</includeonly></onlyinclude>
+{{Documentation}}
