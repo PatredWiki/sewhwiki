@@ -1,0 +1,26 @@
+name: WikiWire
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/**'
+      - 'modules/*'
+      - 'templates/**'
+      - 'templates/*'
+      - 'mediawiki/**'
+      - 'mediawiki/*'
+
+jobs:
+  wikiwire:
+    runs-on: ubuntu-latest
+    name: Sync files to production MediaWiki
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: obbywiki/wikiwire@latest # WikWire is pre-v1 software, consider tethering your workflow to the current latest release to avoid breaking changes
+        with:
+          username: H3LP3R@WikiWire # replace with your bot user and bot password
+          password: ${{ secrets.WIKIWIRE_BOT_PASSWORD }}
+          # dry_run: true # if you want to test your configs and routing first
