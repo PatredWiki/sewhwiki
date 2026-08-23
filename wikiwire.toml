@@ -1,0 +1,14 @@
+# This is a global WikiWire configuration file, a CI action which automatically syncs and uploads modules and templates from a Git repo towards a production or upstream MediaWiki instance via bot passwords and the MediaWiki Action API.
+# Learn more: https://github.com/obbywiki/wikiwire
+
+version = 1
+shared = false
+
+[[sites]]
+id = "sewhwiki"
+host = "sewh.miraheze.org"
+api = "https://sewh.miraheze.org/w/api.php"
+default_branch = "main"
+css_content_model = "sanitized-css"
+common = false
+shared_groups = ["lang"]
