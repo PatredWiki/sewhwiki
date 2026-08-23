@@ -91,6 +91,8 @@ function p.main(frame)
 				:wikitext(v)
 	end
 
+    -- create a tabber for untiered items
+    -- hopefully ill make it so there can be more than one
 	local untieredcontainer = mw.ext.tabber.render( {
 		{
 			label = args.name or "Items",
