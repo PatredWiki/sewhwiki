@@ -1,5 +1,6 @@
 local p = {}
 local getArgs = require("Module:Arguments").getArgs
+
 local tiercolors = {
 	[0] = "#cfcfcf", -- in case of overflow
 
