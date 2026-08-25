@@ -80,8 +80,8 @@ end
 
 -- infobox
 local Infobox = {}
-local Infobox.__index = Infobox
-local Infobox.__tostring = Infobox.tostring
+Infobox.__index = Infobox
+Infobox.__tostring = Infobox.tostring
 
 local pagename = mw.title.getCurrentTitle().fullText
 
