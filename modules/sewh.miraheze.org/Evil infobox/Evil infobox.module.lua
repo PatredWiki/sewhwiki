@@ -45,12 +45,12 @@ local Components = {}
 
 function Components.row(infobox, args)
     local row = mw.html.create("tr")
-        :addClass("info-row")
+        :addClass("infobox-row")
         :tag("th")
-            :wikitext(args.heading or "No heading...")
+            :wikitext(args[1] or "No heading...")
             :done()
         :tag("td")
-            :wikitext(args.data or "No data...")
+            :wikitext(args[2] or "No data...")
             :done()
 
     addClasses(row, args.class)
@@ -59,16 +59,52 @@ function Components.row(infobox, args)
     return row
 end
 
-function Components.header(infobox, args)
-    local header = mw.html.create("tr")
-        :addClass("info-header")
+function Components.title(infobox, args)
+    local title = mw.html.create("tr")
+        :addClass("infobox-title")
         :tag("th")
             :attr("colspan", 2)
             :css{
                 ["-webkit-text-stroke"] = "4px black",
                 ["paint-order"] = "stroke fill"
             }
-            :wikitext(args.heading or "No heading...")
+            :wikitext(args[1] or "No title...")
+            :done()
+
+    addClasses(title, args.class)
+    addCss(title, args.css)
+
+    return title
+end
+
+function Components.subtitle(infobox, args)
+    local subtitle = mw.html.create("tr")
+        :addClass("infobox-subtitle")
+        :tag("th")
+            :attr("colspan", 2)
+            :css{
+                ["-webkit-text-stroke"] = "4px black",
+                ["paint-order"] = "stroke fill"
+            }
+            :wikitext(args[1] or "No subtitle...")
+            :done()
+
+    addClasses(subtitle, args.class)
+    addCss(subtitle, args.css)
+
+    return subtitle
+end
+
+function Components.header(infobox, args)
+    local header = mw.html.create("tr")
+        :addClass("infobox-header")
+        :tag("th")
+            :attr("colspan", 2)
+            :css{
+                ["-webkit-text-stroke"] = "4px black",
+                ["paint-order"] = "stroke fill"
+            }
+            :wikitext(args[1] or "No heading...")
             :done()
 
     addClasses(header, args.class)
@@ -77,6 +113,47 @@ function Components.header(infobox, args)
     return header
 end
 
+function Components.textarea(infobox, args)
+    local textarea = mw.html.create("tr")
+        :addClass("infobox-textarea")
+        :tag("td")
+            :attr("colspan", 2)
+            :wikitext(args[1] or "No text here...")
+            :done()
+
+    addClasses(textarea, args.class)
+    addCss(textarea, args.css)
+
+    return textarea
+end
+
+function Components.currency(infobox, args)
+    local frm = mw.getCurrentFrame()
+    local template = frm:expandTemplate{
+        title = "Currency"
+        args = {
+            args.currency or "Dosh",
+            args.price or "?",
+            "n"
+        }
+    }
+
+    local currency = mw.html.create("tr")
+        :addClass("infobox-currency")
+        :tag("td")
+            :attr("colspan", 2)
+            :wikitext(template)
+            :done()
+
+    addClasses(currency, args.class)
+    addCss(currency, args.css)
+
+    return currency
+end
+
+function Components.image(infobox, args)
+    -- nothing yet woohoo
+end
 
 -- infobox
 local Infobox = {}
@@ -101,6 +178,20 @@ function Infobox:add(component, args)
     local component = Components[component](self, args)
     table.insert(self.rows, component)
     return self
+end
+
+-- convert to string
+function Infobox:tostring()
+    local infobox = mw.html.create("div")
+
+    addClasses(infobox, {"infobox-wrapper", "infobox", "border--beveled-background"})
+    addCss(infobox, {height = "fit-content"})
+
+    for _,row in ipairs(self.rows) do
+        infobox.node(row)
+    end
+
+    return infobox
 end
 
 function p.main(frame)
