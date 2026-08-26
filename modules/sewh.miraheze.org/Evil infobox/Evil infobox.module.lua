@@ -130,7 +130,7 @@ end
 function Components.currency(infobox, args)
     local frm = mw.getCurrentFrame()
     local template = frm:expandTemplate{
-        title = "Currency"
+        title = "Currency",
         args = {
             args.currency or "Dosh",
             args.price or "?",
