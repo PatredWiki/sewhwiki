@@ -154,7 +154,7 @@ end
 
 -- convert to string
 function Infobox:tostring()
-    local infobox = mw.html.create("div")
+    local infobox = mw.html.create("table")
         :addClasses{
             "infobox-wrapper",
             "infobox",
