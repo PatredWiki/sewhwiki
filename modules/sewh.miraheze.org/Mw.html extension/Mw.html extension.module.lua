@@ -117,6 +117,7 @@ end
 
 local function addValues( self, settings )
     -- wikitext and addClass are no-ops when their argument is nil
+
     if settings.parsed ~= false then
         self:wikitextParsed( settings[1] or settings.wikitext )
     else
