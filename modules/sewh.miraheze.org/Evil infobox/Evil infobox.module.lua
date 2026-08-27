@@ -175,4 +175,4 @@ function p.main(frame)
     local args = getArgs(frame)
 end
 
-return p
+return Infobox
