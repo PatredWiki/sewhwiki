@@ -33,6 +33,7 @@ function Components.row(infobox, args)
         :addClasses(args.class)
         :addCss(args.css)
 
+    infobox:node(row)
     return row
 end
 
