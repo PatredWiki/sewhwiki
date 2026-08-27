@@ -40,6 +40,17 @@ function mwHtml:addCss( css )
     end
 end
 
+function mwHtml:wikitextParsed( ... )
+    local frame = mw.getCurrentFrame()
+    local args = { ... }
+
+    for k,v in pairs(args) do
+        args[k] = frame:preprocess(v)
+    end
+
+    return self:wikitext( unpack(args) )
+end
+
 function mwHtml:addClassIf( cond, ... )
     if cond then
         return self:addClass( ... )
@@ -106,7 +117,11 @@ end
 
 local function addValues( self, settings )
     -- wikitext and addClass are no-ops when their argument is nil
-    self:wikitext( settings[1] or settings.wikitext )
+    if settings.parsed ~= false then
+        self:wikitextParsed( settings[1] or settings.wikitext )
+    else
+        self:wikitext( settings[1] or settings.wikitext )
+    end
     self:addClass( settings.class or settings.addClass )
 
     if settings.attr then

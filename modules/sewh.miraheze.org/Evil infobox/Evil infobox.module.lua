@@ -1,6 +1,7 @@
 -- still a wip
 
 local p = {}
+local frm = mw.getCurrentFrame()
 local getArgs = require("Module:Arguments").getArgs
 require("Module:Mw.html extension")
 
@@ -15,6 +16,11 @@ end
 
 local function is(val, expected)
     return type(val) == expected
+end
+
+local function string:remove(pattern)
+    if not is(self, "string") then return self end
+    return self:gsub(pattern, "")
 end
 
 
@@ -41,14 +47,16 @@ end
 function Components.title(infobox, args)
     local title = mw.html.create("tr")
         :addClass("infobox-title")
-        :th {
-            args[1] or "No title...",
-            attr = {colspan = 2},
-            css = {
-                ["-webkit-text-stroke"] = "4px black",
-                ["paint-order"] = "stroke fill"
+        :tr()
+            :th {
+                args[1] or "No title...",
+                attr = {colspan = 2},
+                css = {
+                    ["-webkit-text-stroke"] = "4px black",
+                    ["paint-order"] = "stroke fill"
+                }
             }
-        }
+            :allDone()
         :addClasses(args.class)
         :addCss(args.css)
 
@@ -58,14 +66,16 @@ end
 function Components.subtitle(infobox, args)
     local subtitle = mw.html.create("tr")
         :addClass("infobox-subtitle")
-        :th {
-            args[1] or "No subtitle...",
-            attr = {colspan = 2},
-            css = {
-                ["-webkit-text-stroke"] = "4px black",
-                ["paint-order"] = "stroke fill"
+        :tr()
+            :th {
+                args[1] or "No subtitle...",
+                attr = {colspan = 2},
+                css = {
+                    ["-webkit-text-stroke"] = "4px black",
+                    ["paint-order"] = "stroke fill"
+                }
             }
-        }
+            :allDone()
         :addClasses(args.class)
         :addCss(args.css)
 
@@ -75,14 +85,16 @@ end
 function Components.header(infobox, args)
     local header = mw.html.create("tr")
         :addClass("infobox-header")
-        :th {
-            args[1] or "No heading...",
-            attr = {colspan = 2},
-            css = {
-                ["-webkit-text-stroke"] = "4px black",
-                ["paint-order"] = "stroke fill"
+        :tr()
+            :th {
+                args[1] or "No heading...",
+                attr = {colspan = 2},
+                css = {
+                    ["-webkit-text-stroke"] = "4px black",
+                    ["paint-order"] = "stroke fill"
+                }
             }
-        }
+            :allDone()
         :addClasses(args.class)
         :addCss(args.css)
 
@@ -92,18 +104,19 @@ end
 function Components.textarea(infobox, args)
     local textarea = mw.html.create("tr")
         :addClass("infobox-textarea")
-        :td {
-            args[1] or "No text here...",
-            attr = {colspan = 2}
-        }
-        :addClasses(args.class)
-        :addCss(args.css)
+        :tr()
+            :td {
+                args[1] or "No text here...",
+                attr = {colspan = 2}
+            }
+            :addClasses(args.class)
+            :addCss(args.css)
+            :allDone()
 
     return textarea
 end
 
 function Components.currency(infobox, args)
-    local frm = mw.getCurrentFrame()
     local template = frm:expandTemplate{
         title = "Currency",
         args = {
@@ -115,27 +128,54 @@ function Components.currency(infobox, args)
 
     local currency = mw.html.create("tr")
         :addClass("infobox-currency")
-        :td {
-            template,
-            attr = {colspan = 2}
-        }
-        :addClasses(args.class)
-        :addCss(args.css)
+        :tr()
+            :td {
+                template,
+                attr = {colspan = 2}
+            }
+            :addClasses(args.class)
+            :addCss(args.css)
+            :allDone()
 
     return currency
 end
 
 function Components.image(infobox, args)
-    -- nothing yet woohoo
+    local images = {}
+
+    for k,v in pairs(args) do
+        if k:match("^image%d+$") then
+            local id = tonumber(k:match("%d+"))
+            images[id] = v
+        end
+    end
+
+    if #images < 1 then
+        error("You need at least one image boi")
+    elseif #images == 1 then
+    elseif #images > 1 then
+        tabberargs = {}
+
+        for k,v in ipairs(images) do
+            local image = ("[[File:%s|%spx]]"):format(
+                v.file:remove("File:"),
+                (width and width:remove("px") or 100) .. (height and "x" .. height:remove("px") or "")
+            )
+
+            tabberargs["tab" .. k] = v.name or "Image " .. k
+            tabberargs["content" .. k] = image
+        end
+
+        frm:expandTemplate{
+            title = "Tabber",
+            args = tabberargs
+        }
+    end
 end
 
 -- infobox
 local Infobox = {}
 Infobox.__index = Infobox
-Infobox.__tostring = Infobox.tostring
-
-local pagename = mw.title.getCurrentTitle().fullText
-
 
 -- create infobox
 function Infobox.new(args)
