@@ -155,9 +155,14 @@ end
 -- convert to string
 function Infobox:tostring()
     local infobox = mw.html.create("div")
-
-    addClasses(infobox, {"infobox-wrapper", "infobox", "border--beveled-background"})
-    addCss(infobox, {height = "fit-content"})
+        :addClasses{
+            "infobox-wrapper",
+            "infobox",
+            "border--beveled-background"
+        }
+        :addCss{
+            height = "fit-content"
+        }
 
     for _,row in ipairs(self.rows) do
         infobox.node(row)
