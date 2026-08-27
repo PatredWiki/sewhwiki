@@ -160,8 +160,8 @@ function Components.image(infobox, args)
         tabberargs = {}
 
         for k,v in ipairs(images) do
-            local image = string.format("[[File:%s|%spx]]",
-                remove(v.image, "File:"),
+            local image = ("[[File:%s|%spx]]"):format(
+                remove(v.file, "File:"),
                 (v.width and remove(v.width, "px") or 100) ..
                 (v.height and "x" .. remove(v.height, "px") or "")
             )
