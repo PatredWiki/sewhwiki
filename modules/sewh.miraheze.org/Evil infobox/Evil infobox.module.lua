@@ -19,7 +19,10 @@ local function is(val, expected)
 end
 
 local function remove(str, pattern)
-    if not is(str, "string") then return str
+    if not is(str, "string") then
+        return str
+    end
+
     return str:gsub(pattern, "")
 end
 
