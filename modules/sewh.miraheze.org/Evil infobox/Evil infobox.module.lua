@@ -156,7 +156,7 @@ function Components.image(infobox, args)
             (args.height and "x" .. remove(args.height, "px") or "")
         )
 
-        local imagecaption
+        local imagecaption = ""
         if args.caption then
             imagecaption = mw.html.create("div")
                 :addClass("infobox-image-caption")
@@ -165,13 +165,9 @@ function Components.image(infobox, args)
 
         local imagediv = mw.html.create("div")
             :addClass("infobox-image")
-            :IF(imagecaption)
-                :wikitext(imagetext .. tostring(imagecaption))
-            :ELSE()
-                :wikitext(imagetext)
-            :END()
+            :wikitext(imagetext)
 
-        return tostring(imagediv)
+        return tostring(imagediv) .. tostring(imagecaption)
     end
 
     if #images == 1 then
