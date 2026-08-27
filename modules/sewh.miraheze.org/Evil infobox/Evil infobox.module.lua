@@ -245,7 +245,7 @@ function Infobox:collectImageParams()
         caption = true
     }
 
-    for k,v in pairs(args) do
+    for k,v in pairs(self.args) do
         local imageid = k:match("^image%d+")
         local arg = k:match("%-%w+$")
         if imageid and arg then
