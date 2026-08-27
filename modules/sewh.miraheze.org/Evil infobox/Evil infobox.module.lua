@@ -147,7 +147,7 @@ function Components.image(infobox, args)
     local images = {}
 
     for k,v in pairs(args) do
-        if k:matcH("^image%d+$") then
+        if k:match("^image%d+$") then
             local id = tonumber(k:match("%d+"))
             images[id] = v
         end
