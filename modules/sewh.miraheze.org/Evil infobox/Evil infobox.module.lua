@@ -150,6 +150,7 @@ end
 function Infobox:add(component, args)
     local component = Components[component](self, args)
     table.insert(self.rows, component)
+    mw.logObject(self)
     return self
 end
 
