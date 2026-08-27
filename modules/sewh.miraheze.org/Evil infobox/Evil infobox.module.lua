@@ -171,7 +171,7 @@ function Components.image(infobox, args)
                 :wikitext(imagetext)
             :END()
 
-        return imagediv
+        return tostring(imagediv)
     end
 
     if #images == 1 then
