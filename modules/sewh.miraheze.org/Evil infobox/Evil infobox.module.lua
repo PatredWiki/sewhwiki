@@ -249,7 +249,7 @@ function Infobox:collectImageParams()
         local imageid = k:match("^image%d+")
         local arg = k:match("%-%w+$")
         if imageid and arg then
-            arg = arg:gsub("^%-")
+            arg = arg:gsub("^%-", "")
             if validargs[arg] then
                 imageargs[imageid][arg] = v
             end
