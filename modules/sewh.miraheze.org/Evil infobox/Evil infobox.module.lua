@@ -31,6 +31,7 @@ function Components.row(infobox, args)
             :td {
                 args[2] or "No data..."
             }
+            :allDone()
         :addClasses(args.class)
         :addCss(args.css)
 
