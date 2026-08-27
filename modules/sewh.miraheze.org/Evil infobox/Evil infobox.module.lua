@@ -18,8 +18,9 @@ local function is(val, expected)
     return type(val) == expected
 end
 
-function string.remove(self, pattern)
-    return self:gsub(pattern, "")
+local function remove(str, pattern)
+    if not is(str, "string") then return str
+    return str:gsub(pattern, "")
 end
 
 
@@ -143,7 +144,7 @@ function Components.image(infobox, args)
     local images = {}
 
     for k,v in pairs(args) do
-        if k:match("^image%d+$") then
+        if k:matcH("^image%d+$") then
             local id = tonumber(k:match("%d+"))
             images[id] = v
         end
@@ -157,9 +158,9 @@ function Components.image(infobox, args)
 
         for k,v in ipairs(images) do
             local image = ("[[File:%s|%spx]]"):format(
-                v.file:remove("File:"),
-                (width and (is(width, "string") and width:remove("px") or width) or 100) ..
-                (height and "x" .. (is(height, "string") and height:remove("px") or height) or "")
+                remove(v.image, "File:"),
+                (v.width and remove(v.width, "px") or 100) ..
+                (v.height and "x" .. remove(v.height, "px") or "")
             )
 
             tabberargs["tab" .. k] = v.name or "Image " .. k
