@@ -1,6 +1,5 @@
 -- still a wip
 
-local p = {}
 local frm = mw.getCurrentFrame()
 local getArgs = require("Module:Arguments").getArgs
 require("Module:Mw.html extension")
@@ -27,20 +26,20 @@ local function remove(str, pattern)
 end
 
 
+
 -- components
 local Components = {}
 
 function Components.row(infobox, args)
     local row = mw.html.create("tr")
         :addClass("infobox-row")
-        :tr()
-            :th {
-                args[1] or "No heading..."
-            }
-            :td {
-                args[2] or "No data..."
-            }
-            :allDone()
+        :th {
+            args[1] or "No heading..."
+        }
+        :td {
+            args[2] or "No data..."
+        }
+        :allDone()
         :addClasses(args.class)
         :addCss(args.css)
 
@@ -50,16 +49,15 @@ end
 function Components.title(infobox, args)
     local title = mw.html.create("tr")
         :addClass("infobox-title")
-        :tr()
-            :th {
-                args[1] or "No title...",
-                attr = {colspan = 2},
-                css = {
-                    ["-webkit-text-stroke"] = "4px black",
-                    ["paint-order"] = "stroke fill"
-                }
+        :th {
+            args[1] or "No title...",
+            attr = {colspan = 2},
+            css = {
+                ["-webkit-text-stroke"] = "4px black",
+                ["paint-order"] = "stroke fill"
             }
-            :allDone()
+        }
+        :allDone()
         :addClasses(args.class)
         :addCss(args.css)
 
@@ -69,16 +67,15 @@ end
 function Components.subtitle(infobox, args)
     local subtitle = mw.html.create("tr")
         :addClass("infobox-subtitle")
-        :tr()
-            :th {
-                args[1] or "No subtitle...",
-                attr = {colspan = 2},
-                css = {
-                    ["-webkit-text-stroke"] = "4px black",
-                    ["paint-order"] = "stroke fill"
-                }
+        :th {
+            args[1] or "No subtitle...",
+            attr = {colspan = 2},
+            css = {
+                ["-webkit-text-stroke"] = "4px black",
+                ["paint-order"] = "stroke fill"
             }
-            :allDone()
+        }
+        :allDone()
         :addClasses(args.class)
         :addCss(args.css)
 
@@ -88,16 +85,15 @@ end
 function Components.header(infobox, args)
     local header = mw.html.create("tr")
         :addClass("infobox-header")
-        :tr()
-            :th {
-                args[1] or "No heading...",
-                attr = {colspan = 2},
-                css = {
-                    ["-webkit-text-stroke"] = "4px black",
-                    ["paint-order"] = "stroke fill"
-                }
+        :th {
+            args[1] or "No heading...",
+            attr = {colspan = 2},
+            css = {
+                ["-webkit-text-stroke"] = "4px black",
+                ["paint-order"] = "stroke fill"
             }
-            :allDone()
+        }
+        :allDone()
         :addClasses(args.class)
         :addCss(args.css)
 
@@ -107,14 +103,13 @@ end
 function Components.textarea(infobox, args)
     local textarea = mw.html.create("tr")
         :addClass("infobox-textarea")
-        :tr()
-            :td {
-                args[1] or "No text here...",
-                attr = {colspan = 2}
-            }
-            :addClasses(args.class)
-            :addCss(args.css)
-            :allDone()
+        :td {
+            args[1] or "No text here...",
+            attr = {colspan = 2}
+        }
+        :allDone()
+        :addClasses(args.class)
+        :addCss(args.css)
 
     return textarea
 end
@@ -131,14 +126,13 @@ function Components.currency(infobox, args)
 
     local currency = mw.html.create("tr")
         :addClass("infobox-currency")
-        :tr()
-            :td {
-                template,
-                attr = {colspan = 2}
-            }
-            :addClasses(args.class)
-            :addCss(args.css)
-            :allDone()
+        :td {
+            template,
+            attr = {colspan = 2}
+        }
+        :allDone()
+        :addClasses(args.class)
+        :addCss(args.css)
 
     return currency
 end
@@ -152,6 +146,8 @@ function Components.image(infobox, args)
             images[id] = v
         end
     end
+
+    local result
 
     if #images < 1 then
         error("You need at least one image boi")
@@ -175,7 +171,11 @@ function Components.image(infobox, args)
             args = tabberargs
         }
     end
+
+    return result
 end
+
+
 
 -- infobox
 local Infobox = {}
@@ -216,10 +216,6 @@ function Infobox:tostring()
     end
 
     return tostring(infobox)
-end
-
-function p.main(frame)
-    local args = getArgs(frame)
 end
 
 return Infobox
