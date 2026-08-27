@@ -163,7 +163,7 @@ function Infobox:tostring()
         infobox.node(row)
     end
 
-    return infobox
+    return tostring(infobox)
 end
 
 function p.main(frame)
