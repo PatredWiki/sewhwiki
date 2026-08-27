@@ -238,16 +238,19 @@ function Infobox:collectImageParams()
         end
     }
     local imageargs = setmetatable({}, meta)
+
     local validargs = {
         file = true,
         width = true,
         height = true,
+        name = true,
         caption = true
     }
 
     for k,v in pairs(self.args) do
         local imageid = k:match("^image%d+")
         local arg = k:match("%-%w+$")
+
         if imageid and arg then
             arg = arg:gsub("^%-", "")
             if validargs[arg] then
