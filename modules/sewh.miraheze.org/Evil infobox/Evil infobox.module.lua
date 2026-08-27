@@ -19,7 +19,6 @@ local function is(val, expected)
 end
 
 function string.remove(self, pattern)
-    if not is(self, "string") then return self end
     return self:gsub(pattern, "")
 end
 
@@ -159,7 +158,8 @@ function Components.image(infobox, args)
         for k,v in ipairs(images) do
             local image = ("[[File:%s|%spx]]"):format(
                 v.file:remove("File:"),
-                (width and width:remove("px") or 100) .. (height and "x" .. height:remove("px") or "")
+                (width and (is(width, "string") and width:remove("px") or width) or 100) ..
+                (height and "x" .. (is(height, "string") and height:remove("px") or height) or "")
             )
 
             tabberargs["tab" .. k] = v.name or "Image " .. k
