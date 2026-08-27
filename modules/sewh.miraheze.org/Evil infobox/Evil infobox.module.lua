@@ -33,7 +33,6 @@ function Components.row(infobox, args)
         :addClasses(args.class)
         :addCss(args.css)
 
-    table.insert(infobox.rows, row)
     return row
 end
 
@@ -150,7 +149,7 @@ end
 function Infobox:add(component, args)
     local component = Components[component](self, args)
     table.insert(self.rows, component)
-    mw.logObject(self)
+
     return self
 end
 
@@ -167,7 +166,7 @@ function Infobox:tostring()
         }
 
     for _,row in ipairs(self.rows) do
-        infobox.node(row)
+        infobox:node(row)
     end
 
     return tostring(infobox)
