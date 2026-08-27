@@ -149,30 +149,62 @@ function Components.image(infobox, args)
 
     local result
 
-    if #images < 1 then
-        error("You need at least one image boi")
-    elseif #images == 1 then
+    local function makeImage(args)
+        local imagetext = ("[[File:%s|%spx]]"):format(
+            remove(args.file, "File:"),
+            (args.width and remove(args.width, "px") or 100) ..
+            (args.height and "x" .. remove(args.height, "px") or "")
+        )
+
+        local imagecaption
+        if args.caption then
+            imagecaption = mw.html.create("div")
+                :addClass("infobox-image-caption")
+                :wikitext(args.caption)
+        end
+
+        local imagediv = mw.html.create("div")
+            :addClass("infobox-image")
+            :IF(imagecaption)
+                :wikitext(imagetext .. tostring(imagecaption))
+            :ELSE()
+                :wikitext(imagetext)
+            :END()
+
+        return imagediv
+    end
+
+    if #images == 1 then
+        result = makeImage(images[1])
     elseif #images > 1 then
         tabberargs = {}
 
         for k,v in ipairs(images) do
-            local image = ("[[File:%s|%spx]]"):format(
-                remove(v.file, "File:"),
-                (v.width and remove(v.width, "px") or 100) ..
-                (v.height and "x" .. remove(v.height, "px") or "")
-            )
+            local image = makeImage(v)
 
             tabberargs["tab" .. k] = v.name or "Image " .. k
             tabberargs["content" .. k] = image
         end
 
-        frm:expandTemplate{
+        result = frm:expandTemplate {
             title = "Tabber",
             args = tabberargs
         }
+    else
+        error("You need at least one image boi")
     end
 
-    return result
+    local row = mw.html.create("tr")
+        :addClass("infobox-image-wrapper")
+        :td {
+            result,
+            attr = {colspan = 2}
+        }
+        :allDone()
+        :addClasses(args.class)
+        :addCss(args.css)
+
+    return row
 end
 
 
@@ -202,12 +234,12 @@ end
 -- convert to string
 function Infobox:tostring()
     local infobox = mw.html.create("table")
-        :addClasses{
+        :addClasses {
             "infobox-wrapper",
             "infobox",
             "border--beveled-background"
         }
-        :addCss{
+        :addCss {
             height = "fit-content"
         }
 
