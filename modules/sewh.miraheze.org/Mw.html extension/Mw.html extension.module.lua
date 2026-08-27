@@ -13,6 +13,10 @@ local mwHtml = getmetatable( mw.html.create() ).__index  -- Trick to get acces t
 local stack = {}  -- Used to keep track of nested IF-END tags
 local noOp = {}  -- This object is returned by IF(false) tag
 
+local function is(val, expected)
+    return type(val) == expected
+end
+
 function mwHtml:addClasses( classes )
     if not classes then return self end
 
