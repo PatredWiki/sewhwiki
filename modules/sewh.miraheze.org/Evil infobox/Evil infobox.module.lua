@@ -18,7 +18,7 @@ local function is(val, expected)
     return type(val) == expected
 end
 
-local function string:remove(pattern)
+function string:remove(pattern)
     if not is(self, "string") then return self end
     return self:gsub(pattern, "")
 end
