@@ -138,6 +138,8 @@ function Components.currency(infobox, args)
 end
 
 function Components.image(infobox, args)
+    if args == false then return end
+
     local images = {}
 
     for k,v in pairs(args) do
@@ -252,6 +254,10 @@ function Infobox:collectImageParams()
                 imageargs[imageid][arg] = v
             end
         end
+    end
+
+    if not next(imageargs) then
+        return false
     end
 
     return imageargs
