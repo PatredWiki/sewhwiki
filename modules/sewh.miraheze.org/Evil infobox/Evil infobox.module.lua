@@ -160,7 +160,7 @@ function Components.image(infobox, args)
         if args.caption then
             imagecaption = mw.html.create("div")
                 :addClass("infobox-image-caption")
-                :wikitext(args.caption)
+                :wikitextParsed(args.caption)
         end
 
         local imagediv = mw.html.create("div")
@@ -212,8 +212,7 @@ Infobox.__index = Infobox
 -- create infobox
 function Infobox.new(args)
     local obj = setmetatable({
-        rawargs = args,
-        args = {},
+        args = args,
         rows = {}
     }, Infobox)
     return obj
@@ -225,6 +224,37 @@ function Infobox:add(component, args)
     table.insert(self.rows, component)
 
     return self
+end
+
+-- collect image parameters
+function Infobox:collectImageParams()
+    local meta = {
+        __index = function(tbl, key)
+            local new = setmetatable({}, meta)
+            tbl[key] = new
+            return new
+        end
+    }
+    local imageargs = setmetatable({}, meta)
+    local validargs = {
+        file = true,
+        width = true,
+        height = true,
+        caption = true
+    }
+
+    for k,v in pairs(imageargs) do
+        local imageid = k:match("^image%d+")
+        local arg = k:match("%-%w+$")
+        if imageid and arg then
+            arg = arg:gsub("^%-")
+            if validargs[arg] then
+                imageargs[imageid][arg] = v
+            end
+        end
+    end
+
+    return imageargs
 end
 
 -- convert to string
