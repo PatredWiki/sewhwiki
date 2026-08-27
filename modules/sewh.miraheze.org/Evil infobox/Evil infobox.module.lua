@@ -24,12 +24,13 @@ local Components = {}
 function Components.row(infobox, args)
     local row = mw.html.create("tr")
         :addClass("infobox-row")
-        :th {
-            args[1] or "No heading..."
-        }
-        :td {
-            args[2] or "No data..."
-        }
+        :tr()
+            :th {
+                args[1] or "No heading..."
+            }
+            :td {
+                args[2] or "No data..."
+            }
         :addClasses(args.class)
         :addCss(args.css)
 
