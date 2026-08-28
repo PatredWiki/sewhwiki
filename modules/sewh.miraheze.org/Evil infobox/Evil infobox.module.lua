@@ -31,13 +31,15 @@ end
 local Components = {}
 
 function Components.row(infobox, args)
+    if not args[2] and not args.default then return end
+
     local row = mw.html.create("tr")
         :addClass("infobox-row")
         :th {
             args[1] or "No heading..."
         }
         :td {
-            args[2] or "No data..."
+            args[2] or args.default
         }
         :allDone()
         :addClasses(args.class)
