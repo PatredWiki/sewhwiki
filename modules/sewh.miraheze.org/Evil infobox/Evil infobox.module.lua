@@ -173,8 +173,8 @@ function Components.image(infobox, args)
         local imagediv = mw.html.create("div")
             :addClass("infobox-image")
             :css {
-                ["--bg-width"] = bgwidth,
-                ["--bg-height"] = bgheight
+                ["--bg-width"] = bgwidth .. "px",
+                ["--bg-height"] = bgheight .. "px"
             }
             :wikitext(imagetext)
 
