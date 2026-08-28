@@ -152,10 +152,15 @@ function Components.image(infobox, args)
     local result
 
     local function makeImage(args)
+        local width = args.width and remove(args.width, "px") or 100
+        local height = args.height and remove(args.height, "px") or width
+
+        local bgwidth = args.bgwidth and remove(args.bgwidth, "px") or width
+        local bgheight = args.bgheight and remove(args.bgheight, "px") or height
+
         local imagetext = ("[[File:%s|%spx]]"):format(
             remove(args.file, "File:"),
-            (args.width and remove(args.width, "px") or 100) ..
-            (args.height and "x" .. remove(args.height, "px") or "")
+            width .. "x" .. height
         )
 
         local imagecaption = ""
@@ -167,6 +172,10 @@ function Components.image(infobox, args)
 
         local imagediv = mw.html.create("div")
             :addClass("infobox-image")
+            :css {
+                ["--bg-width"] = bgwidth,
+                ["--bg-height"] = bgheight
+            }
             :wikitext(imagetext)
 
         return tostring(imagediv) .. tostring(imagecaption)
@@ -239,16 +248,21 @@ function Infobox:collectImageParams()
     }
     local imageargs = setmetatable({}, meta)
 
-    local validargs = {
-        file = true,
-        width = true,
-        height = true,
-        name = true,
-        caption = true
+    local validargs_raw = {
+        "file", "width", "height", "bgwidth",
+        "bgheight", "name", "caption"
     }
+    local validargs = {}
+
+    for _,v in pairs(validargs_raw) do
+        validargs[v] = true
+    end
 
     for k,v in pairs(self.args) do
         local imageid = k:match("^image%d+")
+        if k:match("^image%-") then
+            imageid = "image1"
+        end
         local arg = k:match("%-%w+$")
 
         if imageid and arg then
