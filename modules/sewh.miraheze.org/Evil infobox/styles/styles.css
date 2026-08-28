@@ -155,7 +155,7 @@ tbody > tr.infobox-row:not(:last-child):after {
 }
 
 .infobox-wrapper .infobox-textarea .effect-link-parent .effect-link {
-	font-weight: 575 !important;
+	font-weight: 550 !important;
 	font-style: italic;
 }
 
