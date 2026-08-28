@@ -1,0 +1,179 @@
+.infobox-wrapper {
+	display: table !important;
+	margin: 0 0 0.5em 1em;
+	float: right;
+	clear: right;
+	width: 20.5em;
+	border-width: 14px;
+	border-style: solid;
+	border-image-slice: 22 fill;
+	border-image-repeat: stretch;
+	border-image-width: 22px;
+	line-height: 1.5;
+	text-align: left;
+}
+
+@media (max-width: 660px) {
+	.infobox-wrapper {
+		margin: auto;
+		max-width: 26em !important;
+		width: 100% !important;
+		float: none !important;
+	}
+}
+
+.infobox-wrapper p {
+	margin: 0.2em 0;
+}
+
+.infobox-wrapper tr:first-of-type p {
+	margin-top: 0;
+}
+
+.infobox-wrapper tr:last-of-type p {
+	margin-bottom: 0;
+}
+
+.infobox-wrapper .infobox-title p {
+	margin-bottom: 8px;
+}
+
+.infobox-row {
+    position: relative;
+}
+
+tbody > tr.infobox-row:not(:last-child):after {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    height: 1px;
+    background: #bbb2;
+    content: '';
+}
+
+.infobox-row.hidden {
+	display: none;
+}
+
+.infobox-row > th {
+	width: 40%
+}
+
+.infobox-row > td, .infobox-row > th {
+	padding: 5px 0;
+}
+
+.infobox-row:first-child > td, .infobox-row:first-child > th {
+	padding-top: 0;
+}
+
+.infobox-row:last-child > td, .infobox-row:last-child > th {
+	padding-bottom: 0;
+}
+
+.infobox-row ul {
+    margin-left: 15px;
+}
+
+.infobox-title {
+	text-align: center;
+	font-size: 150%;
+}
+
+/* Headers */
+.infobox-header {
+	text-align: center;
+	font-size: 145%;
+	font-style: italic;
+	font-family: 'Comic Neue', 'Comic Sans MS', sans-serif;
+	filter: drop-shadow(1px 3px black);
+}
+
+/* Currency */
+.infobox-wrapper .currency-icon {
+    transform: translateY(-3px);
+    display: inline-block;
+}
+
+/* Images */
+
+.infobox-image-wrapper {
+	text-align: center;
+}
+
+.infobox-image-wrapper > td > div {
+	margin: 8px auto;
+}
+
+.infobox-image {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    overflow: hidden;
+	background: #0002;
+	width: var(--bg-width, 145px);
+	height: var(--bg-height, 145px);
+	border: 2px solid #666;
+	border-radius: 8px;
+	padding: 10px;
+	margin: 0 auto 12px;
+}
+
+.infobox-image.no-background {
+	background: none;
+	border: 0;
+	border-radius: 0;
+}
+
+.infobox-image p {
+	margin: 0 !important;
+	padding-bottom: 0;
+}
+
+.infobox-image-caption {
+	font-style: italic;
+	color: #ccc;
+}
+
+/* Tabbers */
+.infobox-wrapper .sewh-tabber {
+	border: 0;
+	padding: 0;
+}
+
+.infobox-wrapper .sewh-tabber .sewh-tabber-rack {
+	border-radius: 6px;
+	padding: 0;
+	gap: 0;
+}
+
+.infobox-wrapper .sewh-tabber .sewh-tabber-rack .sewh-tabber-tab {
+	border-radius: 0 !important;
+}
+
+.infobox-wrapper .sewh-tabber .sewh-tabber-rack .sewh-tabber-tab.active {
+	animation: selected-noborder 0.3s linear;
+}
+
+/* Status effects */
+.infobox-wrapper .infobox-textarea .effect-link-parent > span[typeof="mw:File"] {
+	display: none;
+}
+
+.infobox-wrapper .infobox-textarea .effect-link-parent .effect-link {
+	font-weight: 575 !important;
+	font-style: italic;
+}
+
+/* Animations */
+@keyframes selected-noborder {
+	0% {
+		filter: brightness(1.5);
+	}
+	100% {
+		filter: none;
+	}
+}

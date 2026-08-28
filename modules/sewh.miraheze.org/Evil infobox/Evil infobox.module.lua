@@ -294,11 +294,13 @@ function Infobox:tostring()
             height = "fit-content"
         }
 
+    local styles = frm:extensionTag("templatestyles", "", {src = "Module:Evil infobox/styles.css"})
+
     for _,row in ipairs(self.rows) do
         infobox:node(row)
     end
 
-    return tostring(infobox)
+    return tostring(infobox) .. tostring(styles)
 end
 
 return Infobox
