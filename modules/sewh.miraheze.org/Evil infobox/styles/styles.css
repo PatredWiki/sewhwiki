@@ -13,15 +13,6 @@
 	text-align: left;
 }
 
-@media (max-width: 660px) {
-	.infobox-wrapper {
-		margin: auto;
-		max-width: 26em !important;
-		width: 100% !important;
-		float: none !important;
-	}
-}
-
 .infobox-wrapper p {
 	margin: 0.2em 0;
 }
@@ -175,5 +166,15 @@ tbody > tr.infobox-row:not(:last-child):after {
 	}
 	100% {
 		filter: none;
+	}
+}
+
+/* Mobile */
+@media (max-width: 660px) {
+	.infobox-wrapper {
+		margin: auto;
+		max-width: 26em !important;
+		width: 100% !important;
+		float: none !important;
 	}
 }
