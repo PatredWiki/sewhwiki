@@ -36,30 +36,66 @@ local function getTable(arg)
 	return t
 end
 
+local function remove(str, pattern)
+	if type(str) ~= "string" then return "" end
+
+	return str:gsub(pattern, "")
+end
+
+local function collectArgs(raw, defaults)
+	local meta = {
+		__index = function(tbl, key)
+			local new = setmetatable({}, meta)
+			tbl[key] = new
+			return new
+		end
+	}
+	local result = setmetatable({}, meta)
+
+	for _,v in pairs(defaults) do
+		if raw[v] then
+			result[1][v] = raw[v]
+		end
+	end
+
+	for k,v in pairs(raw) do
+		local id = k:match("%d+$")
+		if id then
+			local name = remove(k, id)
+			id = tonumber(id)
+
+			result[id][name] = v
+		end
+	end
+	
+	return result
+end
+
 function p.main(frame)
-	local args = getArgs(frame)
+	local rawargs = getArgs(frame)
+	local args = collectArgs(rawargs, {
+		"name", "items", "overlay"
+	})
 
 	-- early error if no items
-	if not args.items then
+	if not args[1].items then
 		error("You need to provide a list of images in the items parameter. You can separate them with commas if there is more than one")
 	end
 
 	local tiers
 
-	if not args.tiers then
+	if not rawargs.tiers then
 		tiers = {"S", "A", "B", "C", "D", "F"}
 	else
 		tiers = getTable(args.tiers)
 	end
-
-	local items = getTable(args.items)
 
 	local tierparent = mw.html.create("div")
 		:addClass("tier-list--parent")
 
 	local tierlist = mw.html.create("div")
 		:addClass("tier-list")
-		:css("--item-size", args.itemsize or "85px")
+		:css("--item-size", rawargs.itemsize or "85px")
 
     -- insert each tier
 	for k,v in ipairs(tiers) do
@@ -81,24 +117,41 @@ function p.main(frame)
 		:wikitext("[[File:SEWH Wiki logo white horizontal.png|250px]]")
 	tierlist:node(watermark)
 
-	local untiereditems = mw.html.create("div")
-		:addClass("tier-list--untiered-rack")
+	local untieredtabs = {}
 
-	for _,v in ipairs(items) do
-		untiereditems
-			:tag("div")
-				:addClass("tier-list--item")
-				:wikitext(v)
+	for _,v in ipairs(args) do
+		local untiereditems = mw.html.create("div")
+			:addClass("tier-list--untiered-rack")
+		local items = getTable(v.items)
+
+		if v.overlay then
+			for _,i in ipairs(items) do
+				untiereditems
+					:tag("div")
+						:addClass("tier-list--item")
+						:wikitext(i)
+						:tag("div")
+							:addClass("tier-list--overlay")
+							:wikitext(v.overlay)
+			end
+		else
+			for _,i in ipairs(items) do
+				untiereditems
+					:tag("div")
+						:addClass("tier-list--item")
+						:wikitext(i)
+			end
+		end
+
+		table.insert(untieredtabs, {
+			label = v.name or "Items",
+			content = tostring(untiereditems)
+		})
 	end
 
     -- create a tabber for untiered items
     -- hopefully ill make it so there can be more than one
-	local untieredcontainer = mw.ext.tabber.render( {
-		{
-			label = args.name or "Items",
-			content = tostring(untiereditems)
-		}
-	} )
+	local untieredcontainer = mw.ext.tabber.render(untieredtabs)
 
 	tierparent:node(tierlist)
 
